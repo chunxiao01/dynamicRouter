@@ -48,16 +48,16 @@ router.beforeEach((to, from, next) => {
     if (dynamicmenuList.length === 0) {
       //动态路由刷新消失
       let menuList = sessionStorage.getItem("menuList")
-      console.log("menuList,", menuList)
       menuList = JSON.parse(menuList)
+      store.dispatch("actionAddMenu", menuList)
       menuList = menuList.map((item) => {
         return {
           ...item,
           component: () => import(`@/${item.componentUrl}`)
         }
       })
-      store.dispatch("actionAddMenu", menuList)
-      store.state.dynamicMenuList.forEach((item) => {
+      console.log("menuList,", menuList)
+      menuList.forEach((item) => {
         router.addRoute("system", item)
       })
       router.addRoute({
